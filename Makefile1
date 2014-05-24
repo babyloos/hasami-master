@@ -1,0 +1,11 @@
+# Makefile 2
+
+hasami: hasami_main.o func.o
+	cc -o hasmai hasami_main.o func.o
+
+# サフィックスルール (.c → .o)
+.cpp.o:
+	cc -c $<
+       
+hasami_main.o: func.h	# 注意: .c ではなく .o が依存している
+func.o: func.h
