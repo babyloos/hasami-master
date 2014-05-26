@@ -14,6 +14,7 @@ class Bord {
 	int turn;		// ƒ^[ƒ“•Ï”@æè‚P@Œãè‚Q
 	int countsente;	//æè‹î‚Ìæ“¾–‡”
 	int countgote;	//Œãè‹î‚Ìæ“¾–‡”
+	int sosaroop;		//‘{¸‚Å‚Ì•Ï”
 public:
 	Bord();
 	void show_bord();
@@ -86,7 +87,15 @@ if (turn == 1) thisTurn = 1;
 	}else {
 		return -1;
 	}
-	sosa(movetox-1, movetoy,turn); //‘{¸‚Ö
+	sosaroop=1;
+	sosa(movetox-1, movetoy,turn); //¶‘{¸‚Ö
+	sosaroop=2;
+	sosa(movetox+1, movetoy,turn); //‰E‘{¸‚Ö
+	sosaroop=3;
+	sosa(movetox, movetoy+1,turn); //ã‘{¸‚Ö
+	sosaroop=4;
+	sosa(movetox, movetoy-1,turn); //‰º‘{¸‚Ö
+	sosaroop=0;
 	return 0;
 }
 
@@ -101,14 +110,17 @@ int Bord::sosa(int x, int y, int turn) {
 	// “G‚Ì‹î‚ğŒ©‚Â‚¯‚½‚çAÀ•W‚ğ1‚Â‚¸‚ç‚µ‚ÄAsosa‚ğŒÄ‚Ño‚·B
 	}else if(bord[y][x] == teki) {
 		
-		ret = sosa(x-1, y, turn);
+		if(sosaroop==1)ret = sosa(x-1, y, turn);
+		else if(sosaroop==2)ret = sosa(x+1, y, turn);
+		else if(sosaroop==3)ret = sosa(x, y+1, turn);
+		else if(sosaroop==4)ret = sosa(x, y-1, turn);
 		// ‚P‚ª‹A‚Á‚Ä‚«‚½‚ç¡‚ÌÀ•W‚ğ©•ª‚Ì‹î‚É’u‚«Š·‚¦‚é
 		if(ret == 1){
 		 bord[y][x] = 0;
 		 if(turn==sente){countsente+=1;
-		 printf("\næè‚Ì‹îæ“¾”%d–‡\n",countsente);}
+		 				printf("\næè‚Ì‹îæ“¾”%d–‡\n",countsente);}
 		 else if(turn==gote){countgote+=1;
-		 printf("\nŒãè‚Ì‹îæ“¾”%d–‡\n",countgote);}
+						printf("\nŒãè‚Ì‹îæ“¾”%d–‡\n",countgote);}
 		}
 		return ret;
 
