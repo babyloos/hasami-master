@@ -12,6 +12,8 @@
 class Bord {
 	char bord[9][9]; // ??1???2 0
 	int turn;		// ターン変数　先手１　後手２
+	int countsente;	//先手駒の取得枚数
+	int countgote;	//後手駒の取得枚数
 public:
 	Bord();
 	void show_bord();
@@ -38,6 +40,8 @@ Bord::Bord() {
 	}
 
 	turn = 1;		// ターン初期化
+	countsente=0;	//先手の駒の取得枚数初期化
+	countgote=0;	//後手の駒の取得枚数初期化
 }
 
 // 盤の表示
@@ -58,7 +62,7 @@ void Bord::show_bord() {
 
 }
 
-int Bord::move(int movefrom, int moveto) {
+int Bord::move(int movefrom, int moveto) {//ほかの駒があったときに駒を飛び越えることはできない処理がない
 	// char thisTurn;
 	/*
 if (turn == 1) thisTurn = 1;
@@ -91,19 +95,25 @@ int Bord::sosa(int x, int y, int turn) {
 	int ret;
 	int teki = abs(turn - 3);
 	// 自分の駒を見つけたら、１を返して終了する。
-	if(bord[x][y] == turn) {
+	if(bord[y][x] == turn) {
 		return 1;
 
 	// 敵の駒を見つけたら、座標を1つずらして、sosaを呼び出す。
-	}else if(bord[x][y] == teki) {
+	}else if(bord[y][x] == teki) {
 		
 		ret = sosa(x-1, y, turn);
 		// １が帰ってきたら今の座標を自分の駒に置き換える
-		if(ret == 1) bord[x+1][y] = 0;
+		if(ret == 1){
+		 bord[y][x] = 0;
+		 if(turn==sente){countsente+=1;
+		 printf("\n先手の駒取得数%d枚\n",countsente);}
+		 else if(turn==gote){countgote+=1;
+		 printf("\n後手の駒取得数%d枚\n",countgote);}
+		}
 		return ret;
 
 	// 空の座標を見つけるか、盤の外に出てしまったら-1を返して終了する。
-	}else if((bord[x][y] == 0)||(x<0)) {
+	}else if((bord[y][x] == 0)||(x<0||x>8||y<0||y>8)) {
 		return -1; 
 
 	}
