@@ -63,7 +63,7 @@ void Bord::show_bord() {
 
 }
 
-int Bord::move(int movefrom, int moveto) {//ほかの駒があったときに駒を飛び越えることはできない処理がない
+int Bord::move(int movefrom, int moveto) {
 	// char thisTurn;
 	/*
 if (turn == 1) thisTurn = 1;
@@ -81,6 +81,12 @@ if (turn == 1) thisTurn = 1;
 	int movetoy = moveto % 10;
 
 	if((fromx!=movetox)&(fromy!=movetoy)) return -1;	// マスは縦横にしか移動できない
+	
+	if((bord[movetoy+1][movetox]==abs(turn-3))&&(bord[movetoy-1][movetox]==abs(turn-3)))return -1;	//挟まれているところに移動はできない
+	if((bord[movetoy][movetox+1]==abs(turn-3))&&(bord[movetoy][movetox-1]==abs(turn-3)))return -1;	//挟まれているところに移動はできない
+
+
+
 	if((bord[fromy][fromx]==turn)&(bord[movetoy][movetox] == aki)){   // 自分の駒で移動先が空の場合だけ移動処理をする
 			bord[movetoy][movetox] = bord[fromy][fromx];
 			bord[fromy][fromx] = aki;
@@ -109,11 +115,18 @@ int Bord::sosa(int x, int y, int turn) {
 
 	// 敵の駒を見つけたら、座標を1つずらして、sosaを呼び出す。
 	}else if(bord[y][x] == teki) {
-		
-		if(sosaroop==1)ret = sosa(x-1, y, turn);
-		else if(sosaroop==2)ret = sosa(x+1, y, turn);
-		else if(sosaroop==3)ret = sosa(x, y+1, turn);
-		else if(sosaroop==4)ret = sosa(x, y-1, turn);
+		switch(sosaroop){
+		case 1:
+		ret = sosa(x-1, y, turn);break;
+		case 2:
+		ret = sosa(x+1, y, turn);break;
+		case 3:
+		ret = sosa(x, y+1, turn);break;
+		case 4:
+		ret = sosa(x, y-1, turn);break;
+		default:
+			printf("sosa内での異常");break;
+		}
 		// １が帰ってきたら今の座標を自分の駒に置き換える
 		if(ret == 1){
 		 bord[y][x] = 0;
