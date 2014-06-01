@@ -9,11 +9,12 @@
 #define aki 0
 #define sente 1 //先手
 #define gote 2//後手
+	int countsente;	//先手駒の取得枚数
+	int countgote;	//後手駒の取得枚数
+
 class Bord {
 	char bord[9][9]; // ??1???2 0
 	int turn;		// ターン変数　先手１　後手２
-	int countsente;	//先手駒の取得枚数
-	int countgote;	//後手駒の取得枚数
 	int sosaroop;		//捜査での変数
 public:
 	Bord();
@@ -64,6 +65,7 @@ void Bord::show_bord() {
 }
 
 int Bord::move(int movefrom, int moveto) {
+	int x;
 	// char thisTurn;
 	/*
 if (turn == 1) thisTurn = 1;
@@ -79,11 +81,41 @@ if (turn == 1) thisTurn = 1;
 
 	int movetox = moveto / 10;
 	int movetoy = moveto % 10;
-
+	
 	if((fromx!=movetox)&(fromy!=movetoy)) return -1;	// マスは縦横にしか移動できない
 	
 	if((bord[movetoy+1][movetox]==abs(turn-3))&&(bord[movetoy-1][movetox]==abs(turn-3)))return -1;	//挟まれているところに移動はできない
 	if((bord[movetoy][movetox+1]==abs(turn-3))&&(bord[movetoy][movetox-1]==abs(turn-3)))return -1;	//挟まれているところに移動はできない
+	
+	
+	//駒を飛び越えない処理
+	if(fromx!=movetox){//横移動
+		if(movetox-fromx>0){//右移動
+		for(x=1;x<(movetox-fromx);x++){
+		if(bord[movetoy][fromx+x]!=0) return -1;
+										}
+							}
+		else if(movetox-fromx<0){//左移動
+			for(x=-1;x>(movetox-fromx);x--){
+			if(bord[movetoy][fromx+x]!=0) return -1;
+											}
+								}
+	} 
+	
+	else if(fromy-movetoy!=0){//縦移動
+			if(movetoy-fromy>0){//下移動
+		for(x=1;x<(movetoy-fromy);x++){
+		
+		if(bord[fromy+x][fromx]!=0) return -1;
+										}
+							}
+		else if(movetoy-fromy<0){//上移動
+			for(x=-1;x>(movetoy-fromy);x--){
+			if(bord[fromy+x][fromx]!=0) return -1;
+											}
+								}
+	} 	
+	
 
 
 
@@ -156,6 +188,7 @@ void Bord::turnChange(){
 turn=abs(turn - 3);
 }
 	
+
 int main() {
 	Bord mainBord;		// ??
 	printf("最新のファイルです。\n");
@@ -163,6 +196,9 @@ int main() {
 	int movefrom, moveto;
 	int movetox;
 	int movetoy;
+	int wins=0;
+	int wing=0;
+	
 
 
 	while(1) {
@@ -179,9 +215,17 @@ int main() {
 			else break;
 		}
 		// 駒の処理
-	movetox = moveto / 10;
-	movetoy = moveto % 10;
-	
+		
+	//勝利条件の処理 
+	if(countsente-countgote==3&&wins==0) wins=1;
+	else if(countsente>=5||countsente-countgote>3||(countsente-countgote>=3)&&(wins==1)){printf("先手の勝利です\n");
+	break;
+ 		}
+ 	
+ 	if(countgote-countsente==3&&wing==0) wing=1;
+ 	else if(countgote>=5||countgote-countsente>3||(countgote-countsente>=3)&&(wing==1)){printf("後手の勝利です\n");
+ 		break;
+ 		}
 
 	mainBord.turnChange();//次のターンへ
 	}
