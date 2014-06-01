@@ -84,10 +84,6 @@ if (turn == 1) thisTurn = 1;
 	
 	if((fromx!=movetox)&(fromy!=movetoy)) return -1;	// ƒ}ƒX‚Íc‰¡‚É‚µ‚©ˆÚ“®‚Å‚«‚È‚¢
 	
-	if((bord[movetoy+1][movetox]==abs(turn-3))&&(bord[movetoy-1][movetox]==abs(turn-3)))return -1;	//‹²‚Ü‚ê‚Ä‚¢‚é‚Æ‚±‚ë‚ÉˆÚ“®‚Í‚Å‚«‚È‚¢
-	if((bord[movetoy][movetox+1]==abs(turn-3))&&(bord[movetoy][movetox-1]==abs(turn-3)))return -1;	//‹²‚Ü‚ê‚Ä‚¢‚é‚Æ‚±‚ë‚ÉˆÚ“®‚Í‚Å‚«‚È‚¢
-	
-	
 	//‹î‚ð”ò‚Ñ‰z‚¦‚È‚¢ˆ—
 	if(fromx!=movetox){//‰¡ˆÚ“®
 		if(movetox-fromx>0){//‰EˆÚ“®
